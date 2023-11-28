@@ -86,7 +86,7 @@ function fetchAdd() {
           const tipo = planeta.bodyType;
           acc[tipo] = acc[tipo] || [];
 
-          if (acc[tipo].length < 7) {
+          if (acc[tipo].length < 3) {
             acc[tipo].push(planeta);
           }
 
@@ -104,6 +104,23 @@ function fetchAdd() {
       console.log(
         "Aqui tá separado por tipo e massa ",
         separadorTipoTres(astrosOrdenadosPorTipo)
+      );
+
+      const corposOrbitados = bodies.filter((x) => x.aroundPlanet != null);
+      const planetasOrbitados = corposOrbitados.reduce((acc, planeta) => {
+        const nomeDoPlaneta = planeta.aroundPlanet.planet;
+        acc[nomeDoPlaneta] = acc[nomeDoPlaneta] || [];
+        acc[nomeDoPlaneta].push(planeta.englishName);
+        return acc;
+      }, {});
+      console.log(planetasOrbitados);
+      const massaTodos = planetas.reduce((acc, planeta) => {
+        acc += planeta.mass.massValue;
+        return acc;
+      }, 0);
+      console.log(
+        "A media da massa de todos é :",
+        massaTodos / planetas.length
       );
     })
     .catch((error) => {
