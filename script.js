@@ -17,6 +17,7 @@ function fetchAdd() {
       const planetaNomes = planetas.map((x) => x.englishName);
       console.log(planetaNomes);
       const planetasSort = planetas.sort((a, b) => a.meanRadius - b.meanRadius);
+      const astrosSort = bodies.sort((a, b) => b.meanRadius - a.meanRadius);
       const planetasSortName = planetasSort.map((x) => x.englishName);
       console.log(planetasSortName);
       const planetasVirgula = planetasSortName.join(", ");
@@ -71,18 +72,39 @@ function fetchAdd() {
       });
 
       function separadorTipo(planetas) {
-        const separados = [];
-        planetas.forEach((x) => {
-          const tipo = x.bodyType;
-          if (!separados[tipo]) {
-            separados[tipo] = [];
+        const separados = planetas.reduce((acc, planeta) => {
+          const tipo = planeta.bodyType;
+          acc[tipo] = acc[tipo] || [];
+          acc[tipo].push(planeta);
+          return acc;
+        }, {});
+
+        return separados;
+      }
+      function separadorTipoTres(planetas) {
+        const separados = planetas.reduce((acc, planeta) => {
+          const tipo = planeta.bodyType;
+          acc[tipo] = acc[tipo] || [];
+
+          if (acc[tipo].length < 7) {
+            acc[tipo].push(planeta);
           }
-          separados[tipo].push(x);
-        });
+
+          return acc;
+        }, {});
+
         return separados;
       }
       const separadinhos = separadorTipo(bodies);
       console.log(separadinhos);
+
+      const astrosOrdenadosPorTipo = astrosSort.sort((a, b) =>
+        a.bodyType.localeCompare(b.bodyType)
+      );
+      console.log(
+        "Aqui tá separado por tipo e massa ",
+        separadorTipoTres(astrosOrdenadosPorTipo)
+      );
     })
     .catch((error) => {
       console.log(error.message);
@@ -90,9 +112,3 @@ function fetchAdd() {
 }
 
 fetchAdd();
-
-let arrayBruno = new Array(1, 2, 3, 4, 5);
-
-$arr = [1, 2, 3, 4];
-
-axios
