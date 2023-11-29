@@ -122,7 +122,23 @@ function fetchAdd() {
         "A media da massa de todos é :",
         massaTodos / planetas.length
       );
+
+      const satEPlut = bodies.filter(
+        (x) => x.englishName == "Saturn" || x.englishName == "Pluto"
+      );
+      console.log(
+        "A menor distancia é ",
+        satEPlut[0].perihelion - satEPlut[1].perihelion
+      );
+      console.log(
+        "A menor distancia media é ",
+        Math.abs(
+          (satEPlut[0].perihelion + satEPlut[0].aphelion) / 2 -
+            (satEPlut[1].perihelion + satEPlut[1].aphelion) / 2
+        )
+      );
     })
+
     .catch((error) => {
       console.log(error.message);
     });
